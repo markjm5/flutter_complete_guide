@@ -7,9 +7,9 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.MethodCall;
 
-import com.example.flutter_complete_guide.MyApplication;
 import com.evergage.android.Evergage;
 import com.evergage.android.ClientConfiguration;
+
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "demo.flutter_complete_guide/info";
@@ -26,8 +26,9 @@ public class MainActivity extends FlutterActivity {
                     String message = "Android says hi.";
                     result.success(message);
 
-                    MyApplication myApp = new MyApplication();
+                    MyFlutterApplication myApp = new MyFlutterApplication();
 
+                    //myApp.onCreate();
                 }
            }
         });
