@@ -15,7 +15,7 @@ public class MyFlutterApplication extends FlutterApplication {
         // Initialize Evergage:
         Evergage.initialize(this);
         evergage = Evergage.getInstance();
-        evergage.setUserId("janedoe");
+        //evergage.setUserId("janedoe");
 
         evergage.start(new ClientConfiguration.Builder().account("interactionstudio").dataset("mmukherjee_sandbox").usePushNotifications(true).build());
     }

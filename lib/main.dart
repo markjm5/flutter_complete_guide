@@ -108,9 +108,13 @@ class _MyAppState extends State<MyApp> {
   }
   
   Future<String> _getMessage() async {
+    var sendMap = <String, dynamic> {
+      'from': 'Mark',
+    };
+
     String value;
     try {
-      value = await platform.invokeMethod('getMessage');
+      value = await platform.invokeMethod('getMessage', sendMap);
     } catch (e){
       print(e);
     }

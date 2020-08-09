@@ -10,6 +10,8 @@ import io.flutter.plugin.common.MethodCall;
 import com.evergage.android.Evergage;
 import com.evergage.android.ClientConfiguration;
 
+import java.util.Map;
+
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "demo.flutter_complete_guide/info";
@@ -22,8 +24,15 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler(){
            @Override
            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+
+               Map<String, Object> arguments = methodCall.arguments();
+
                 if(methodCall.method.equals("getMessage")){
-                    String message = "Android says hi.";
+
+                    String from = (String) arguments.get("from");
+
+
+                    String message = "Android says hi " + from;
                     result.success(message);
 
                     MyFlutterApplication myApp = new MyFlutterApplication();
