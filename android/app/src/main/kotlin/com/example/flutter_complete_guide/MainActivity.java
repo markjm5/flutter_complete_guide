@@ -8,6 +8,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.MethodCall;
 
 import com.evergage.android.Evergage;
+import com.evergage.android.EvergageActivity;
 import com.evergage.android.ClientConfiguration;
 
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "demo.flutter_complete_guide/info";
+    private FlutterActivity thisActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -38,7 +40,9 @@ public class MainActivity extends FlutterActivity {
 
                     MyFlutterApplication myApp = new MyFlutterApplication();
 
-                    myApp.startEvg(account, ds);
+                    Evergage myEvg = myApp.startEvg(account, ds);
+
+                    myApp.refreshScreen(myEvg, thisActivity);
 
                     //myApp.onCreate();
                 }
