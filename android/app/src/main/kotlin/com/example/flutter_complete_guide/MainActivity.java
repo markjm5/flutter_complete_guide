@@ -44,10 +44,19 @@ public class MainActivity extends FlutterActivity {
                         myEvg = myApp.startEvg(account, ds);
                     }
 
-                    myApp.refreshScreen(myEvg, thisActivity);
+                    //myApp.refreshScreen(myEvg, thisActivity);
 
                     //myApp.onCreate();
                 }
+
+
+               if(methodCall.method.equals("logEvent")) {
+
+                   String event = (String) arguments.get("event");
+                   myApp.refreshScreen(myEvg, thisActivity, event);
+
+               }
+
            }
         });
     }

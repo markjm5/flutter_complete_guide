@@ -76,6 +76,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
+    _logEvent().then((String message){
+      setState(() {
+        _message = message;        
+      });   
+   });
 
     _totalScore += score;
 
@@ -123,5 +128,19 @@ class _MyAppState extends State<MyApp> {
     return value;
   }
 
+  Future<String> _logEvent() async {
+    var sendMap = <String, dynamic> {
+      'event': 'Blah',
+    };
+
+    String value;
+    try {
+      value = await platform.invokeMethod('logEvent', sendMap);
+    } catch (e){
+      print(e);
+    }
+
+    return value;
+  }  
 
 }
