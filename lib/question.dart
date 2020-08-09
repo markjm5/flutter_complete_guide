@@ -11,7 +11,7 @@ class Question extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(10),
-      child: Text(appMessage, style: TextStyle(fontSize: 28),
+      child: Text(questionText, style: TextStyle(fontSize: 28),
       textAlign: TextAlign.center,),
     );
   }

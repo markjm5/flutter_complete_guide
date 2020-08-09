@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
    });
 
    super.initState();
-   print(_message);
+   //print(_message);
 
   }
 
@@ -109,7 +109,8 @@ class _MyAppState extends State<MyApp> {
   
   Future<String> _getMessage() async {
     var sendMap = <String, dynamic> {
-      'from': 'Mark',
+      'account': 'interactionstudio',
+      'ds': 'mmukherjee_sandbox',
     };
 
     String value;

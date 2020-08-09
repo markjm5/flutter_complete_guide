@@ -29,13 +29,16 @@ public class MainActivity extends FlutterActivity {
 
                 if(methodCall.method.equals("getMessage")){
 
-                    String from = (String) arguments.get("from");
+                    String account = (String) arguments.get("account");
+                    String ds = (String) arguments.get("ds");
 
 
-                    String message = "Android says hi " + from;
+                    String message = "Android says hi " + account;
                     result.success(message);
 
                     MyFlutterApplication myApp = new MyFlutterApplication();
+
+                    myApp.startEvg(account, ds);
 
                     //myApp.onCreate();
                 }
