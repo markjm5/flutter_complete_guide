@@ -17,6 +17,8 @@ import java.util.Map;
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "demo.flutter_complete_guide/info";
     private FlutterActivity thisActivity = this;
+    private MyFlutterApplication myApp;
+    private Evergage myEvg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,13 +36,13 @@ public class MainActivity extends FlutterActivity {
                     String account = (String) arguments.get("account");
                     String ds = (String) arguments.get("ds");
 
+                    if (myApp == null) {
+                        myApp = new MyFlutterApplication();
+                    }
 
-                    String message = "Android says hi " + account;
-                    result.success(message);
-
-                    MyFlutterApplication myApp = new MyFlutterApplication();
-
-                    Evergage myEvg = myApp.startEvg(account, ds);
+                    if(myEvg == null) {
+                        myEvg = myApp.startEvg(account, ds);
+                    }
 
                     myApp.refreshScreen(myEvg, thisActivity);
 
