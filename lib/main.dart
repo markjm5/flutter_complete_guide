@@ -75,8 +75,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _answerQuestion(int score) {
-    _logEvent().then((String message){
+  void _answerQuestion(int score, String answerText, Function logEvent) {
+    logEvent(answerText).then((String message){
       setState(() {
         _message = message;        
       });   
@@ -106,6 +106,7 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
                 appMessage: _message,
+                logEvent: _logEvent,
               )
             : Result(_totalScore, _resetQuiz),
       ),
@@ -128,9 +129,9 @@ class _MyAppState extends State<MyApp> {
     return value;
   }
 
-  Future<String> _logEvent() async {
+  Future<String> _logEvent(String answerChosen) async {
     var sendMap = <String, dynamic> {
-      'event': 'Blah',
+      'event': 'Answer Selected: ' + answerChosen,
     };
 
     String value;

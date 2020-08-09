@@ -44,9 +44,6 @@ public class MainActivity extends FlutterActivity {
                         myEvg = myApp.startEvg(account, ds);
                     }
 
-                    //myApp.refreshScreen(myEvg, thisActivity);
-
-                    //myApp.onCreate();
                 }
 
 
