@@ -31,7 +31,7 @@ public class MainActivity extends FlutterActivity {
 
                Map<String, Object> arguments = methodCall.arguments();
 
-                if(methodCall.method.equals("getMessage")){
+                if(methodCall.method.equals("androidInitialize")){
 
                     String account = (String) arguments.get("account");
                     String ds = (String) arguments.get("ds");
@@ -46,8 +46,7 @@ public class MainActivity extends FlutterActivity {
 
                 }
 
-
-               if(methodCall.method.equals("logEvent")) {
+               if(methodCall.method.equals("androidLogEvent")) {
 
                    String event = (String) arguments.get("event");
                    myApp.refreshScreen(myEvg, thisActivity, event);

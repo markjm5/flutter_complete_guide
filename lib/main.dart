@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState(){
 
-    _getMessage().then((String message){
+    _androidInitialize().then((String message){
       setState(() {
         _message = message;        
       });   
@@ -75,8 +75,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _answerQuestion(int score, String answerText, Function logEvent) {
-    logEvent(answerText).then((String message){
+  void _answerQuestion(int score, String answerText, Function androidLogEvent) {
+    androidLogEvent(answerText).then((String message){
       setState(() {
         _message = message;        
       });   
@@ -106,14 +106,14 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
                 appMessage: _message,
-                logEvent: _logEvent,
+                androidLogEvent: _androidLogEvent,
               )
             : Result(_totalScore, _resetQuiz),
       ),
     );
   }
   
-  Future<String> _getMessage() async {
+  Future<String> _androidInitialize() async {
     var sendMap = <String, dynamic> {
       'account': 'interactionstudio',
       'ds': 'mmukherjee_sandbox',
@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
 
     String value;
     try {
-      value = await platform.invokeMethod('getMessage', sendMap);
+      value = await platform.invokeMethod('androidInitialize', sendMap);
     } catch (e){
       print(e);
     }
@@ -129,14 +129,14 @@ class _MyAppState extends State<MyApp> {
     return value;
   }
 
-  Future<String> _logEvent(String answerChosen) async {
+  Future<String> _androidLogEvent(String answerChosen) async {
     var sendMap = <String, dynamic> {
       'event': 'Answer Selected: ' + answerChosen,
     };
 
     String value;
     try {
-      value = await platform.invokeMethod('logEvent', sendMap);
+      value = await platform.invokeMethod('androidLogEvent', sendMap);
     } catch (e){
       print(e);
     }
