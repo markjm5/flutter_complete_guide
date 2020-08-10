@@ -47,7 +47,31 @@ class _MessagingWidgetState extends State<MessagingWidget> {
   @override
   Widget build(BuildContext context) => ListView(
         children: messages.map(buildMessage).toList(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
       );
+/*
+  @override
+  Widget build(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+        title: new Text("Alert Dialog title"),
+        content: new Text("Alert Dialog body"),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("Close"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    );
+  }    
+*/
 
   Widget buildMessage(Message message) => ListTile(
         title: Text(message.title),

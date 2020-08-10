@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './question.dart';
 import './answer.dart';
+import './messaging.dart';
 
 class Quiz extends StatelessWidget {
   final List<Map<String, Object>> questions;
@@ -15,6 +16,7 @@ class Quiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        MessagingWidget(),
         Question(
           questions[questionIndex]['questionText'],
           appMessage,

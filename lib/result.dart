@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './question.dart';
 import './answer.dart';
+import './messaging.dart';
+
 
 class Result extends StatelessWidget {
   final int resultScore;
@@ -29,6 +31,7 @@ class Result extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
+          MessagingWidget(),
           Text(
             resultPhrase,
             style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),

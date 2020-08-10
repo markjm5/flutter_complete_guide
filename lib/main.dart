@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import './quiz.dart';
 import './result.dart';
-import './messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -113,7 +112,8 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-  
+
+
   Future<String> _androidInitialize() async {
     var sendMap = <String, dynamic> {
       'account': 'interactionstudio',
