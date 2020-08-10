@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import './quiz.dart';
 import './result.dart';
+import './messaging.dart';
 
 void main() => runApp(MyApp());
 
