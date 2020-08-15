@@ -67,6 +67,7 @@ public class MainActivity extends FlutterActivity {
                if(methodCall.method.equals("androidGetDataCampaign")) {
 
                    String event = (String) arguments.get("event");
+                   myScreen = myApp.refreshScreen(myEvg, thisActivity, event);
                    activeCampaign = myApp.getDataCampaign(myEvg, thisActivity, event, activeCampaign, myScreen);
                    String message = "";
                    if(activeCampaign != null) {
