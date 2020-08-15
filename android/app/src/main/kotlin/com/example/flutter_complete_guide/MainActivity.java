@@ -51,6 +51,8 @@ public class MainActivity extends FlutterActivity {
                     if(myEvg == null) {
                         myEvg = myApp.startEvg(account, ds);
                     }
+                    String message = "Initialized!!";
+                    result.success(message);
 
                 }
 
@@ -58,56 +60,22 @@ public class MainActivity extends FlutterActivity {
 
                    String event = (String) arguments.get("event");
                    myScreen = myApp.refreshScreen(myEvg, thisActivity, event);
-
+                   String message = "Event Logged!!";
+                   result.success(message);
                }
 
                if(methodCall.method.equals("androidGetDataCampaign")) {
 
                    String event = (String) arguments.get("event");
-                   if (myScreen != null) {
-                       CampaignHandler handler = new CampaignHandler() {
-                           @Override
-                           public void handleCampaign(@NonNull Campaign campaign) {
-                               // Validate the campaign data since it's dynamic JSON. Avoid processing if fails.
-                               String featuredProductName = campaign.getData().optString("featuredProductName");
-                               if (featuredProductName == null || featuredProductName.isEmpty()) {
-                                   return;
-                               }
-
-                               // Check if the same content is already visible/active (see Usage Details above).
-                               if (activeCampaign != null && activeCampaign.equals(campaign)) {
-                                   //Log.d(TAG, "Ignoring campaign name " + campaign.getCampaignName() + " since equivalent content is already active");
-                                   return;
-                               }
-
-                               // Track the impression for statistics even if the user is in the control group.
-                               myScreen.trackImpression(campaign);
-
-                               // Only display the campaign if the user is not in the control group.
-                               if (!campaign.isControlGroup()) {
-                                   // Keep active campaign as long as needed for (re)display and comparison
-                                   activeCampaign = campaign;
-                                   //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
-
-                                   // Display campaign content
-                                   //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
-
-                                   //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
-                               }
-                           }
-                       };
-
-                       // The target string uniquely identifies the expected data schema - here, a featured product:
-                       myScreen.setCampaignHandler(handler, "featuredProduct");
-
-                       // Return details of activeCampaign
-                       //Log.d(TAG, "New active activeCampaign name " + activeCampaign.getCampaignName() +" for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData());
-                       String message = "New active activeCampaign name " + activeCampaign.getCampaignName() +" for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
-                       result.success(message);
+                   activeCampaign = myApp.getCampaign(myEvg, thisActivity, event, activeCampaign);
+                   String message = "";
+                   if(activeCampaign != null) {
+                       message = "New active activeCampaign name " + activeCampaign.getCampaignName() + " for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
+                   }else{
+                       message = "Campaign is NULL";
                    }
+                   result.success(message);
                }
-
-
            }
         });
     }

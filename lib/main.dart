@@ -22,20 +22,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState(){
 
-    _androidGetDataCampaign().then((String campaign){
-      setState(() {
-        _campaign = campaign;        
-      });   
-   });
-
     _androidInitialize().then((String message){
       setState(() {
         _message = message;        
       });   
    });
 
+    _androidGetDataCampaign().then((String campaign){
+      setState(() {
+        _campaign = campaign;        
+      });   
+   });
+
+
    super.initState();
-   //print(_message);
 
   }
 
@@ -113,6 +113,7 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
                 appMessage: _message,
+                appCampaign: _campaign,
                 androidLogEvent: _androidLogEvent,
               )
             : Result(_totalScore, _resetQuiz),
@@ -130,6 +131,7 @@ class _MyAppState extends State<MyApp> {
     String value;
     try {
       value = await platform.invokeMethod('androidInitialize', sendMap);
+      print("initialize: " + value.toString());
     } catch (e){
       print(e);
     }
@@ -145,6 +147,8 @@ class _MyAppState extends State<MyApp> {
     String value;
     try {
       value = await platform.invokeMethod('androidLogEvent', sendMap);
+      print("log event: " + value.toString());
+
     } catch (e){
       print(e);
     }
@@ -160,13 +164,13 @@ class _MyAppState extends State<MyApp> {
     String value;
     try {
       value = await platform.invokeMethod('androidGetDataCampaign', sendMap);
+      print("get data campaign: " + value.toString());
+
     } catch (e){
       print(e);
     }
 
     return value;
   }  
-
-  
 
 }
