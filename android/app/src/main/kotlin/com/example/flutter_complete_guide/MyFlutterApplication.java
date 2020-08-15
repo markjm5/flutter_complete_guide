@@ -17,7 +17,7 @@ import com.evergage.android.Screen;
 
 public class MyFlutterApplication extends FlutterApplication {
     public Evergage evergage;
-    public static Campaign returnCampaign;
+    public Campaign returnCampaign;
 
 
     @Override
@@ -38,7 +38,7 @@ public class MyFlutterApplication extends FlutterApplication {
         return evergage;
     }
 
-    public Screen refreshScreen(Evergage myEvg, FlutterActivity fa, String event) {
+    public Campaign refreshScreen(Evergage myEvg, FlutterActivity fa, String event) {
         // Evergage track screen view
         Screen screen = myEvg.getScreenForActivity(fa);
 
@@ -54,17 +54,7 @@ public class MyFlutterApplication extends FlutterApplication {
 
             // Or maybe screen isn't related to your catalog:
             screen.trackAction(event);
-        }
-        return screen;
 
-    }
-
-    public Campaign getDataCampaign(Evergage myEvg, FlutterActivity fa, String event, Campaign activeCampaign, Screen myScreen) {
-
-
-        //Screen myScreen = myEvg.getScreenForActivity(fa);
-
-        if (myScreen != null) {
             CampaignHandler handler = new CampaignHandler() {
 
                 @Override
@@ -75,35 +65,24 @@ public class MyFlutterApplication extends FlutterApplication {
                         return;
                     }
 
-                    // Check if the same content is already visible/active (see Usage Details above).
-                    if (activeCampaign != null && activeCampaign.equals(campaign)) {
-                        //Log.d(TAG, "Ignoring campaign name " + campaign.getCampaignName() + " since equivalent content is already active");
-                        returnCampaign = activeCampaign;
-                        //return activeCampaign;
-                    } else {
+                    // Track the impression for statistics even if the user is in the control group.
+                    screen.trackImpression(campaign);
 
-                        // Track the impression for statistics even if the user is in the control group.
-                        myScreen.trackImpression(campaign);
+                    // Only display the campaign if the user is not in the control group.
+                    if (!campaign.isControlGroup()) {
+                        // Keep active campaign as long as needed for (re)display and comparison
+                        returnCampaign = campaign;
+                        //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
 
-                        // Only display the campaign if the user is not in the control group.
-                        if (!campaign.isControlGroup()) {
-                            // Keep active campaign as long as needed for (re)display and comparison
-                            returnCampaign = campaign;
-                            //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
+                        // Display campaign content
+                        //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
 
-                            // Display campaign content
-                            //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
-
-                            //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
-                        }
+                        //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
                     }
                 }
             };
+            screen.setCampaignHandler(handler, "featuredProduct");
 
-            // The target string uniquely identifies the expected data schema - here, a featured product:
-            myScreen.setCampaignHandler(handler, "featuredProduct");
-            // Return details of activeCampaign
-            //Log.d(TAG, "New active activeCampaign name " + activeCampaign.getCampaignName() +" for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData());
         }
         return returnCampaign;
 

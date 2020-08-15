@@ -17,7 +17,6 @@ class _MyAppState extends State<MyApp> {
 
   static const platform = const MethodChannel('demo.flutter_complete_guide/info'); 
   String _message;
-  String _campaign;
 
   @override
   void initState(){
@@ -27,13 +26,6 @@ class _MyAppState extends State<MyApp> {
         _message = message;        
       });   
    });
-
-    _androidGetDataCampaign().then((String campaign){
-      setState(() {
-        _campaign = campaign;        
-      });   
-   });
-
 
    super.initState();
 
@@ -79,11 +71,6 @@ class _MyAppState extends State<MyApp> {
       _questionIndex = 0;
       _totalScore = 0;
 
-      _androidGetDataCampaign().then((String campaign){
-        setState(() {
-          _campaign = campaign;        
-        });   
-      });
       }
     );
   }
@@ -119,7 +106,6 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
                 appMessage: _message,
-                appCampaign: _campaign,
                 androidLogEvent: _androidLogEvent,
               )
             : Result(_totalScore, _resetQuiz),
@@ -160,23 +146,6 @@ class _MyAppState extends State<MyApp> {
     }
 
     return value;
-  }  
-
-  Future<String> _androidGetDataCampaign() async {
-    var sendMap = <String, dynamic> {
-      'event': 'getCampaign',
-    };
-
-    String value;
-    try {
-      value = await platform.invokeMethod('androidGetDataCampaign', sendMap);
-      print("get data campaign: " + value.toString());
-
-    } catch (e){
-      print(e);
-    }
-
-    return value;
-  }  
+  }    
 
 }

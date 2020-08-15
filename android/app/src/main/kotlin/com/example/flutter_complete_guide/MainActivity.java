@@ -59,19 +59,11 @@ public class MainActivity extends FlutterActivity {
                if(methodCall.method.equals("androidLogEvent")) {
 
                    String event = (String) arguments.get("event");
-                   myScreen = myApp.refreshScreen(myEvg, thisActivity, event);
-                   String message = "Event Logged!!";
-                   result.success(message);
-               }
+                   String message = null;
 
-               if(methodCall.method.equals("androidGetDataCampaign")) {
-
-                   String event = (String) arguments.get("event");
-                   myScreen = myApp.refreshScreen(myEvg, thisActivity, event);
-                   activeCampaign = myApp.getDataCampaign(myEvg, thisActivity, event, activeCampaign, myScreen);
-                   String message = "";
-                   if(activeCampaign != null) {
-                       message = "New active activeCampaign name " + activeCampaign.getCampaignName() + " for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
+                   activeCampaign = myApp.refreshScreen(myEvg, thisActivity, event);
+                   if(activeCampaign != null){
+                       message = "There is a Campaign! WOW!!!";
                    }else{
                        message = "Campaign is NULL";
                    }
