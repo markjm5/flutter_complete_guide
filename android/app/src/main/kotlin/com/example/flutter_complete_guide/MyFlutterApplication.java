@@ -59,7 +59,7 @@ public class MyFlutterApplication extends FlutterApplication {
 
     }
 
-    public Campaign getCampaign(Evergage myEvg, FlutterActivity fa, String event, Campaign activeCampaign) {
+    public Campaign getDataCampaign(Evergage myEvg, FlutterActivity fa, String event, Campaign activeCampaign) {
 
 
         Screen myScreen = myEvg.getScreenForActivity(fa);

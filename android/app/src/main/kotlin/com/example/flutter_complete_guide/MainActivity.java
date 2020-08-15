@@ -67,7 +67,7 @@ public class MainActivity extends FlutterActivity {
                if(methodCall.method.equals("androidGetDataCampaign")) {
 
                    String event = (String) arguments.get("event");
-                   activeCampaign = myApp.getCampaign(myEvg, thisActivity, event, activeCampaign);
+                   activeCampaign = myApp.getDataCampaign(myEvg, thisActivity, event, activeCampaign);
                    String message = "";
                    if(activeCampaign != null) {
                        message = "New active activeCampaign name " + activeCampaign.getCampaignName() + " for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
