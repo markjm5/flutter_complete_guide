@@ -78,6 +78,12 @@ class _MyAppState extends State<MyApp> {
     setState((){
       _questionIndex = 0;
       _totalScore = 0;
+
+      _androidGetDataCampaign().then((String campaign){
+        setState(() {
+          _campaign = campaign;        
+        });   
+      });
       }
     );
   }

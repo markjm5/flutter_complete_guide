@@ -59,17 +59,13 @@ public class MyFlutterApplication extends FlutterApplication {
 
     }
 
-    public Campaign getDataCampaign(Evergage myEvg, FlutterActivity fa, String event, Campaign activeCampaign) {
+    public Campaign getDataCampaign(Evergage myEvg, FlutterActivity fa, String event, Campaign activeCampaign, Screen myScreen) {
 
 
-        Screen myScreen = myEvg.getScreenForActivity(fa);
+        //Screen myScreen = myEvg.getScreenForActivity(fa);
 
         if (myScreen != null) {
             CampaignHandler handler = new CampaignHandler() {
-
-                public Campaign getReturnCampaign() {
-                    return returnCampaign;
-                }
 
                 @Override
                 public void handleCampaign(@NonNull Campaign campaign) {
