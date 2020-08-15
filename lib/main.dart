@@ -17,9 +17,16 @@ class _MyAppState extends State<MyApp> {
 
   static const platform = const MethodChannel('demo.flutter_complete_guide/info'); 
   String _message;
+  String _campaign;
 
   @override
   void initState(){
+
+    _androidGetDataCampaign().then((String campaign){
+      setState(() {
+        _campaign = campaign;        
+      });   
+   });
 
     _androidInitialize().then((String message){
       setState(() {
@@ -144,5 +151,22 @@ class _MyAppState extends State<MyApp> {
 
     return value;
   }  
+
+  Future<String> _androidGetDataCampaign() async {
+    var sendMap = <String, dynamic> {
+      'event': 'getCampaign',
+    };
+
+    String value;
+    try {
+      value = await platform.invokeMethod('androidGetDataCampaign', sendMap);
+    } catch (e){
+      print(e);
+    }
+
+    return value;
+  }  
+
+  
 
 }

@@ -32,7 +32,7 @@ public class MyFlutterApplication extends FlutterApplication {
         return evergage;
     }
 
-    public void refreshScreen(Evergage myEvg, FlutterActivity fa, String event) {
+    public Screen refreshScreen(Evergage myEvg, FlutterActivity fa, String event) {
         // Evergage track screen view
         Screen screen = myEvg.getScreenForActivity(fa);
 
@@ -49,6 +49,7 @@ public class MyFlutterApplication extends FlutterApplication {
             // Or maybe screen isn't related to your catalog:
             screen.trackAction(event);
         }
+        return screen;
 
     }
 
