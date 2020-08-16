@@ -29,9 +29,51 @@ public class MainActivity extends FlutterActivity {
     private Campaign activeCampaign;
 
     @Override
+    public void onStart(){
+        super.onStart();
+        myApp.refreshScreen("Start App", myScreen);
+
+        CampaignHandler handler = new CampaignHandler() {
+
+            @Override
+            public void handleCampaign(@NonNull Campaign campaign) {
+                // Validate the campaign data since it's dynamic JSON. Avoid processing if fails.
+                String featuredProductName = campaign.getData().optString("featuredProductName");
+                if (featuredProductName == null || featuredProductName.isEmpty()) {
+                    return;
+                }
+
+                // Check if the same content is already visible/active (see Usage Details above).
+                if (activeCampaign != null && activeCampaign.equals(campaign)) {
+                    return;
+                }
+
+                // Track the impression for statistics even if the user is in the control group.
+                myScreen.trackImpression(campaign);
+
+                // Only display the campaign if the user is not in the control group.
+                if (!campaign.isControlGroup()) {
+                    // Keep active campaign as long as needed for (re)display and comparison
+                    activeCampaign = campaign;
+                    //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
+
+                    // Display campaign content
+                    //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
+
+                    //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
+                }
+            }
+        };
+        myScreen.setCampaignHandler(handler, "featuredProduct");
+
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler(){
            @Override
@@ -51,6 +93,9 @@ public class MainActivity extends FlutterActivity {
                     if(myEvg == null) {
                         myEvg = myApp.startEvg(account, ds);
                     }
+
+                    myScreen = myEvg.getScreenForActivity(thisActivity);
+
                     String message = "Initialized!!";
                     result.success(message);
 
@@ -59,14 +104,11 @@ public class MainActivity extends FlutterActivity {
                if(methodCall.method.equals("androidLogEvent")) {
 
                    String event = (String) arguments.get("event");
-                   String message = null;
 
-                   activeCampaign = myApp.refreshScreen(myEvg, thisActivity, event);
-                   if(activeCampaign != null){
-                       message = "There is a Campaign! WOW!!!";
-                   }else{
-                       message = "Campaign is NULL";
-                   }
+                   myApp.refreshScreen(event, myScreen);
+
+                   String message = "Success in Tracking Event!";
+
                    result.success(message);
                }
            }
