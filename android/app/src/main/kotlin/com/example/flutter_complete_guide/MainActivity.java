@@ -27,7 +27,45 @@ public class MainActivity extends FlutterActivity {
     private Evergage myEvg;
     private Screen myScreen;
     private Campaign activeCampaign;
-    
+    private CampaignHandler handler;
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        handler = new CampaignHandler() {
+
+            @Override
+            public void handleCampaign(@NonNull Campaign campaign) {
+                // Validate the campaign data since it's dynamic JSON. Avoid processing if fails.
+                String featuredProductName = campaign.getData().optString("featuredProductName");
+                if (featuredProductName == null || featuredProductName.isEmpty()) {
+                    return;
+                }
+
+                // Check if the same content is already visible/active (see Usage Details above).
+                if (activeCampaign != null && activeCampaign.equals(campaign)) {
+                    return;
+                }
+
+                // Track the impression for statistics even if the user is in the control group.
+                myScreen.trackImpression(campaign);
+
+                // Only display the campaign if the user is not in the control group.
+                if (!campaign.isControlGroup()) {
+                    // Keep active campaign as long as needed for (re)display and comparison
+                    activeCampaign = campaign;
+                    //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
+
+                    // Display campaign content
+                    //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
+
+                    //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
+                }
+            }
+        };
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -65,44 +103,17 @@ public class MainActivity extends FlutterActivity {
 
                    String event = (String) arguments.get("event");
 
-                   myApp.refreshScreen(event, myScreen);
+                   myScreen = myApp.refreshScreen(event, myScreen);
 
-
-                   CampaignHandler handler = new CampaignHandler() {
-
-                       @Override
-                       public void handleCampaign(@NonNull Campaign campaign) {
-                           // Validate the campaign data since it's dynamic JSON. Avoid processing if fails.
-                           String featuredProductName = campaign.getData().optString("featuredProductName");
-                           if (featuredProductName == null || featuredProductName.isEmpty()) {
-                               return;
-                           }
-
-                           // Check if the same content is already visible/active (see Usage Details above).
-                           if (activeCampaign != null && activeCampaign.equals(campaign)) {
-                               return;
-                           }
-
-                           // Track the impression for statistics even if the user is in the control group.
-                           myScreen.trackImpression(campaign);
-
-                           // Only display the campaign if the user is not in the control group.
-                           if (!campaign.isControlGroup()) {
-                               // Keep active campaign as long as needed for (re)display and comparison
-                               activeCampaign = campaign;
-                               //Log.d(TAG, "New active campaign name " + campaign.getCampaignName() +" for target " + campaign.getTarget() + " with data " + campaign.getData());
-
-                               // Display campaign content
-                               //May Not need This: TextView featuredProductTextView = (TextView) findViewById(R.id.evergage_in_app_message);
-
-                               //May Not Need This: featuredProductTextView.setText("Our featured product is " + featuredProductName + "!");
-                           }
-                       }
-                   };
                    myScreen.setCampaignHandler(handler, "featuredProduct");
 
+                   String message = null;
 
-                   String message = "Success in Tracking Event!";
+                   if(activeCampaign != null) {
+                       message = "New active campaign name " + activeCampaign.getCampaignName() + " for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
+                   }else {
+                       message = "There is no campaign";
+                   }
 
                    result.success(message);
                }
