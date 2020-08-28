@@ -110,9 +110,9 @@ public class MainActivity extends FlutterActivity {
                    String message = null;
 
                    if(activeCampaign != null) {
-                       message = "New active campaign name " + activeCampaign.getCampaignName() + " for target " + activeCampaign.getTarget() + " with data " + activeCampaign.getData();
+                       message = "Campaign: " + activeCampaign.getCampaignName() + " For target: " + activeCampaign.getTarget() + " With data: " + activeCampaign.getData();
                    }else {
-                       message = "There is no campaign";
+                       message = "Generic Campaign";
                    }
 
                    result.success(message);
